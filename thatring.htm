@@ -7,26 +7,58 @@
 </style></head><body>
 <script>
 "use strict";
-<!-- Javascriptはここに -->
 const NEW_SVGTAG = (tag) => document.createElementNS("http://www.w3.org/2000/svg",tag);
 
-// PCCS->RGB http://www.wsj21.net/ghp/ghp0c_03.html
-// 使うのは、PCCS light 色相環(12色)
-const colorstr = ["#d995ac","#f59fa0","#ffb195","#ffc887","#f9e08a","#d9d784","#8dd3ad","#71c5be","#71b1c7","#7e9dc3","#9c95c1","#b48fb5"];
-//円環中央部の半径
-const innerradius = .875;
+//**** 色＆形状の設定 ****
 
-//共通値
-const rad = 2*Math.PI/colorstr.length;
-const dx = Math.sin(rad);
-const dy = 1-Math.cos(rad);
-const diff = innerradius*Math.sqrt(dx*dx+dy*dy);
+// 設定色をCSS3で使える表現で記す。
+const colorinstr = ["#d995ac","#f59fa0","#ffb195","#ffc887","#f9e08a","#d9d784","#8dd3ad","#71c5be","#71b1c7","#7e9dc3","#9c95c1","#b48fb5"];
+// PCCS->RGB http://www.wsj21.net/ghp/ghp0c_03.html 使うのは、PCCS light 色相環(12色)
+
+//塗る塗らないを切り替える幅の配列。[index&0]～[&1]間が塗られる。必ず偶数個にしてね。
+const stripwidths  = [150,1, 7,2, 4,15, 0,10, 1,3, 6,1];
+const strippattern = [  0,0, 0,0, 1, 0, 0, 2, 0,0, 0,0]; //0=円 非0=直前径とジグザグ(striphints参照)
+const striphints = [
+	[1,5,3,7,9,2,3,2,8,3,11,3,5,3,2,3,8,5,1,6,4,7,6,5],
+	[2,3,1,2,2,2,1,4,5,1,2,3,1,2,2,2,1,4,5,1]
+]; //strippatternで非0にした値をどうジグザグさせるか。[index&0]外径[&1]内径
+
+//======== 以下コード ========
+
+//積分(配列)
+const integral = (a)=>{
+	let b = [], s = 0;
+	for(let i in a){ b[i] = s += a[i]; }
+	return b;
+};
+//標準化(配列,倍率,下駄)
+const normalize = (a,m=1,b=0)=>{
+	const x = Math.max(...a);
+	return a.map( (v)=> m*v/x+b );
+};
+//円に内接する正多角形の辺の長さ
+const edgelen_regpoly = (num_angle)=>{
+	let w = 2*Math.PI/num_angle;
+	let dx = Math.sin(w);
+	let dy = 1-Math.cos(w);
+	return Math.sqrt(dx*dx+dy*dy);
+};
+//stripwidthsは積分して0～1に標準化、striphintsは積分して0～2piに標準化する。
+let stripwidths_i = normalize( integral(stripwidths) );
+let striphints_i = [];
+for(let h of striphints){ striphints_i.push( normalize( integral(h), 2*Math.PI ) ); }
+//円環の中央部半径
+const rad_midstrip = stripwidths_i[0]+(1-stripwidths_i[0])/2;
+//色付け円の中心同士の距離(＝指定する半径)
+const gap_colorcircle = rad_midstrip * edgelen_regpoly(colorinstr.length);
+
+//構造的には「色配置」「クリップパスで切り抜く」で分割(モジュライズ)可能。
+
 //SVG要素
 const rootsvg = NEW_SVGTAG("svg");
-rootsvg.style.width = "500px";
-rootsvg.style.height = "500px";
+rootsvg.style.width = rootsvg.style.height = "500px";
 rootsvg.setAttribute("viewBox", "-1 -1 2 2");
-//defs要素
+//defs要素(HTML化した時に(多少)わかりやすくなる(はず))
 const defz = NEW_SVGTAG("defs");
 rootsvg.appendChild(defz);
 //g要素
@@ -37,23 +69,17 @@ const clip = NEW_SVGTAG("clipPath");
 clip.id = "ringclip";
 clip.setAttribute("clip-rule","evenodd");
 let p1 = NEW_SVGTAG("path");
-const stripratio   = [150,1, 7,2, 4,15, 0,10, 1,3, 6,1]; //先頭は150/200の空白
-const strippattern = [  0,0, 0,0, 1, 0, 0, 1, 0,0, 0,0]; //0=円 1=直前径とジグザグ
-//open-close
-let stripsum = [];
-const striptotal = stripratio.reduce( (a,c)=>{ stripsum.push(a+c); return a+c; },0 );
-const stripinrange = stripsum.map( (v)=>v/striptotal );
 
 let dstr = "";
-for( let i = 0 ; i < stripinrange.length ; ++i ){
-	let r = stripinrange[i];
+for( let i = 0 ; i < stripwidths_i.length ; ++i ){
+	let r = stripwidths_i[i];
 	if( strippattern[i] === 0 ){
 		dstr += `M-${r},0`;
 		dstr += `A${r},${r} 0 0 ${i&1} ${r},0`;
 		dstr += `A${r},${r} 0 0 ${i&1} -${r},0z`;
 	}
 	else {
-		let q = stripinrange[i-1];
+		let q = stripwidths_i[i-1];
 		dstr += `M-${r},0`;
 		dstr += `A${r},${r} 0 0 ${i&1} ${r},0`;
 		dstr += `L${q},0`;
@@ -67,26 +93,26 @@ clip.appendChild(p1);
 defz.appendChild(clip);
 grp.setAttribute("clip-path",`url(#${clip.id})`);
 //円形に配置
-for( let index = 0 ; index < colorstr.length ; ++index ){
+for( let index = 0 ; index < colorinstr.length ; ++index ){
 	//グラデーション設定
 	let raGdt = NEW_SVGTAG("radialGradient");
 	raGdt.id = `filler${index}`;
 	let s1 = NEW_SVGTAG("stop");
 	s1.setAttribute("offset","0");
-	s1.setAttribute("stop-color",colorstr[index]);
+	s1.setAttribute("stop-color",colorinstr[index]);
 	s1.setAttribute("stop-opacity","1");
 	let s2 = NEW_SVGTAG("stop");
 	s2.setAttribute("offset","1");
-	s2.setAttribute("stop-color",colorstr[index]);
+	s2.setAttribute("stop-color",colorinstr[index]);
 	s2.setAttribute("stop-opacity","0");
 	raGdt.appendChild(s1);
 	raGdt.appendChild(s2);
 	defz.appendChild(raGdt);
 	//上を利用した円の描画
 	let c1 = NEW_SVGTAG("circle");
-	c1.cx.baseVal.value = innerradius*Math.sin(2*Math.PI*index/colorstr.length);
-	c1.cy.baseVal.value = innerradius*Math.cos(2*Math.PI*index/colorstr.length);
-	c1.r.baseVal.value = diff;
+	c1.cx.baseVal.value = rad_midstrip*Math.sin(2*Math.PI*index/colorinstr.length);
+	c1.cy.baseVal.value = rad_midstrip*Math.cos(2*Math.PI*index/colorinstr.length);
+	c1.r.baseVal.value = gap_colorcircle;
 	c1.style.fill = `url(#${raGdt.id})`;
 	grp.appendChild(c1);
 }
