@@ -9,14 +9,14 @@
 "use strict";
 const NEW_SVGTAG = (tag) => document.createElementNS("http://www.w3.org/2000/svg",tag);
 
-//**** 色＆形状の設定 ****
+//**** 色＆形状のパラメタ ****
 
 // 設定色をCSS3で使える表現で記す。
 const colorinstr = ["#d995ac","#f59fa0","#ffb195","#ffc887","#f9e08a","#d9d784","#8dd3ad","#71c5be","#71b1c7","#7e9dc3","#9c95c1","#b48fb5"];
 // PCCS->RGB http://www.wsj21.net/ghp/ghp0c_03.html 使うのは、PCCS light 色相環(12色)
 
 //塗る塗らないを切り替える幅の配列。[index&0]～[&1]間が塗られる。必ず偶数個にしてね。
-const stripwidths  = [150,1, 7,2, 4,15, 0,10, 1,3, 6,1];
+const stripwidths  = [150,1, 7,2, 4,14, 0,10, 2,3, 6,1];
 const strippattern = [  0,0, 0,0, 1, 0, 0, 2, 0,0, 0,0]; //0=円 非0=直前径とジグザグ(striphints参照)
 const striphints = [
 	[1,5,3,7,9,2,3,2,8,3,11,3,5,3,2,3,8,5,1,6,4,7,6,5],
@@ -51,48 +51,46 @@ for(let h of striphints){ striphints_i.push( normalize( integral(h), 2*Math.PI )
 const rad_midstrip = stripwidths_i[0]+(1-stripwidths_i[0])/2;
 //色付け円の中心同士の距離(＝指定する半径)
 const gap_colorcircle = rad_midstrip * edgelen_regpoly(colorinstr.length);
-
-//構造的には「色配置」「クリップパスで切り抜く」で分割(モジュライズ)可能。
-
-//SVG要素
-const rootsvg = NEW_SVGTAG("svg");
-rootsvg.style.width = rootsvg.style.height = "500px";
-rootsvg.setAttribute("viewBox", "-1 -1 2 2");
-//defs要素(HTML化した時に(多少)わかりやすくなる(はず))
-const defz = NEW_SVGTAG("defs");
-rootsvg.appendChild(defz);
-//g要素
-const grp = NEW_SVGTAG("g");
-rootsvg.appendChild(grp);
-//クリップパス準備
-const clip = NEW_SVGTAG("clipPath");
-clip.id = "ringclip";
-clip.setAttribute("clip-rule","evenodd");
-let p1 = NEW_SVGTAG("path");
-
+//「切り抜く形状」を表す文字列(<path>の d プロパティ)を生成する
 let dstr = "";
 for( let i = 0 ; i < stripwidths_i.length ; ++i ){
-	let r = stripwidths_i[i];
+	let r = stripwidths_i[i]; //対象半径
+	dstr += `M${r},0`;
 	if( strippattern[i] === 0 ){
-		dstr += `M-${r},0`;
-		dstr += `A${r},${r} 0 0 ${i&1} ${r},0`;
-		dstr += `A${r},${r} 0 0 ${i&1} -${r},0z`;
+		dstr += `A${r},${r} 0 0 ${i&1} -${r},0`;
+		dstr += `A${r},${r} 0 0 ${i&1} ${r},0z`;
 	}
 	else {
-		let q = stripwidths_i[i-1];
-		dstr += `M-${r},0`;
-		dstr += `A${r},${r} 0 0 ${i&1} ${r},0`;
-		dstr += `L${q},0`;
-		dstr += `A${q},${q} 0 0 ${i&1} -${q},0z`;
+		let q = stripwidths_i[i-1]; //直前半径
+		let ah = striphints_i[strippattern[i]-1]; //配列：切り替える角度
+		for( let j = 0 ; j < ah.length ; ++j ){
+			let s = (j&1?q:r), t = (j&1?r:q); //s=主、t=従 //反時計回りはY方向を反転
+			let mx = Math.cos(ah[j]), my = Math.sin(i&1?ah[j]:-ah[j]); //
+			dstr += `A${s},${s} 0 0 ${i&1} ${s*mx},${s*my}`; //円弧
+			dstr += (j+1 === ah.length ? "z" : `L${t*mx},${t*my}`); //直線
+		}
 	}
-	// a rx,ry 楕円の傾き 大回り(1|0) 時計回り(1|0) x,y
-}
-p1.setAttribute("d",dstr);
+}	// A rx,ry 楕円の傾き 大回り(1|0) 時計回り(1|0) x,y
 
-clip.appendChild(p1);
+//クリップパス準備
+const clip = NEW_SVGTAG("clipPath");
+clip.id = "thatring";
+clip.setAttribute("clip-rule","evenodd");
+clip.appendChild(
+	//<path>を生成して直接append
+	( p =>{
+		p.setAttribute("d",dstr);
+		return p;
+	})( NEW_SVGTAG("path") )
+);
+//<defs> HTML化した時に(多少)わかりやすくなる(はず)
+const defz = NEW_SVGTAG("defs");
 defz.appendChild(clip);
+//<g>
+const grp = NEW_SVGTAG("g");
 grp.setAttribute("clip-path",`url(#${clip.id})`);
-//円形に配置
+
+//「色配置」円形に配置
 for( let index = 0 ; index < colorinstr.length ; ++index ){
 	//グラデーション設定
 	let raGdt = NEW_SVGTAG("radialGradient");
@@ -117,6 +115,12 @@ for( let index = 0 ; index < colorinstr.length ; ++index ){
 	grp.appendChild(c1);
 }
 
+//<svg> SVGを構成・接続する
+const rootsvg = NEW_SVGTAG("svg");
+rootsvg.style.width = rootsvg.style.height = "500px";
+rootsvg.setAttribute("viewBox", "-1 -1 2 2");
+rootsvg.appendChild(defz);
+rootsvg.appendChild(grp);
 document.body.appendChild(rootsvg);
 
 </script></body></html>
