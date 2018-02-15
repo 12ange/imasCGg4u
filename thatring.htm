@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <title>デレステの背景の謎輪っか</title>
 <style>
+@keyframes oneturn {
+	0% {transform:rotate(0turn)}
+	100% {transform:rotate(1turn)}
+}
+#thatring {animation: oneturn 120s linear infinite}
 </style></head><body>
 <script>
 "use strict";
@@ -74,7 +79,6 @@ for( let i = 0 ; i < stripwidths_i.length ; ++i ){
 
 //クリップパス準備
 const clip = NEW_SVGTAG("clipPath");
-clip.id = "thatring";
 clip.setAttribute("clip-rule","evenodd");
 clip.appendChild(
 	//<path>を生成して直接append
@@ -88,6 +92,8 @@ const defz = NEW_SVGTAG("defs");
 defz.appendChild(clip);
 //<g>
 const grp = NEW_SVGTAG("g");
+grp.id = "thatring";
+clip.id = "path"+grp.id; //<g>のidを加工して<clipPath>のidを決める(ことで重複させない)
 grp.setAttribute("clip-path",`url(#${clip.id})`);
 
 //「色配置」円形に配置
