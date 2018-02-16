@@ -28,38 +28,6 @@ const striphints = [
 	[2,3,1,2,2,2,1,4,5,1,2,3,1,2,2,2,1,4,5,1]
 ]; //strippatternで非0にした値をどうジグザグさせるか。[index&0]外径[&1]内径
 
-//「色配置」円形に配置
-for( let index = 0 ; index < colorinstr.length ; ++index ){
-	//グラデーション設定
-	let raGdt = NEW_SVGTAG("radialGradient");
-	raGdt.id = `filler${index}`;
-	let s1 = NEW_SVGTAG("stop");
-	s1.setAttribute("offset","0");
-	s1.setAttribute("stop-color",colorinstr[index]);
-	s1.setAttribute("stop-opacity","1");
-	let s2 = NEW_SVGTAG("stop");
-	s2.setAttribute("offset","1");
-	s2.setAttribute("stop-color",colorinstr[index]);
-	s2.setAttribute("stop-opacity","0");
-	raGdt.appendChild(s1);
-	raGdt.appendChild(s2);
-	defz.appendChild(raGdt);
-	//上を利用した円の描画
-	let c1 = NEW_SVGTAG("circle");
-	c1.cx.baseVal.value = rad_midstrip*Math.sin(2*Math.PI*index/colorinstr.length);
-	c1.cy.baseVal.value = rad_midstrip*Math.cos(2*Math.PI*index/colorinstr.length);
-	c1.r.baseVal.value = gap_colorcircle;
-	c1.style.fill = `url(#${raGdt.id})`;
-	grp.appendChild(c1);
-}
-
-//<svg> SVGを構成・接続する
-const rootsvg = NEW_SVGTAG("svg");
-rootsvg.style.width = rootsvg.style.height = "500px";
-rootsvg.setAttribute("viewBox", "-1 -1 2 2");
-rootsvg.appendChild(defz);
-rootsvg.appendChild(grp);
-document.body.appendChild(rootsvg);
 document.body.appendChild(thatRing(
 	colorinstr,
 	stripwidths,
