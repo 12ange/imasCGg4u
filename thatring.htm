@@ -2,37 +2,16 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<title>デレステの背景の謎輪っか</title>
-<style>
-@keyframes oneturn {
-	0% {transform:rotate(0turn)}
-	100% {transform:rotate(1turn)}
-}
-#thatring {animation: oneturn 120s linear infinite}
-</style></head><body>
-<script src="./thatring.js"></script>
-<script>
-"use strict";
-
-//**** 色＆形状のパラメタ ****
-
-// 設定色をCSS3で使える表現で記す。
-const colorinstr = ["#d995ac","#f59fa0","#ffb195","#ffc887","#f9e08a","#d9d784","#8dd3ad","#71c5be","#71b1c7","#7e9dc3","#9c95c1","#b48fb5"];
-// PCCS->RGB http://www.wsj21.net/ghp/ghp0c_03.html 使うのは、PCCS light 色相環(12色)
-
-//塗る塗らないを切り替える幅の配列。[index&0]～[&1]間が塗られる。必ず偶数個にしてね。
-const stripwidths  = [150,1, 7,2, 4,14, 0,10, 2,3, 6,1];
-const strippattern = [  0,0, 0,0, 1, 0, 0, 2, 0,0, 0,0]; //0=円 非0=直前径とジグザグ(striphints参照)
-const striphints = [
-	[1,5,3,7,9,2,3,2,8,3,11,3,5,3,2,3,8,5,1,6,4,7,6,5],
-	[2,3,1,2,2,2,1,4,5,1,2,3,1,2,2,2,1,4,5,1]
-]; //strippatternで非0にした値をどうジグザグさせるか。[index&0]外径[&1]内径
-
-document.body.appendChild(thatRing(
-	colorinstr,
-	stripwidths,
-	strippattern,
-	striphints
-));
-
-</script></body></html>
+<title>デレステの背景の謎輪っか(使用例)</title>
+<script defer src="./thatring.js"></script>
+</head><body>
+<p>指定なし<imascgss-thatring></imascgss-thatring></p>
+<p>指定ありでそれっぽいの<imascgss-thatring
+	style="--length-size:500px; --time-per-turn:120s"
+	data-colors ="#d995ac,#f59fa0,#ffb195,#ffc887,#f9e08a,#d9d784,#8dd3ad,#71c5be,#71b1c7,#7e9dc3,#9c95c1,#b48fb5"
+	data-widths ="150,1, 7,2, 4,14, 0,10, 2,3, 6,1"
+	data-pattern="  0,0, 0,0, 1, 0, 0, 2, 0,0, 0,0"
+	data-hint1  ="1,5,3,7,9,2,3,2,8,3,11,3,5,3,2,3,8,5,1,6,4,7,6,5"
+	data-hint2  ="2,3,1,2,2,2,1,4,5,1,2,3,1,2,2,2,1,4,5,1"
+></imascgss-thatring></p>
+</body></html>
