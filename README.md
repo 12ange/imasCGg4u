@@ -7,13 +7,14 @@
 ```html
 <imascgss-thatring
 	data-colors="省略可能"
-	data-widths="円周"
-	data-pattern="JSON"
-	data-hintN="JSON"
+	data-json="JSON"
 ></imascgss-thatring>
 ```
 
 でざっくり指定すれば、使える。詳しくは /thatring.htm に使用例があるのでそっちで。
+
+**thatring 積み残し : 回る向き、時計回りに限らない。**
+
 
 ## ひょっとして
 
@@ -56,18 +57,3 @@ DOMツリーを動的に生成するなら結局JSなので、
 * JSが直接触るビルダークラス
 * ↑を継承するなり保持するなりした CustEle 専用無名クラス (define関数の第2引数に直書き)
 の2本立てにして、HTMLを手打ちしてJSノータッチの静的ページは CustEle で簡単に使えるようにすればいいかな。
-
-----
-
-1. attributeChangedCallback()をうまいこと使いたい
-1. けれど data-pattern と data-hint* が不可分な存在である
-1. 💡 data-pattern を JSON で要求すればいいじゃん 💡 そしてhint配列をpattern配列に埋め込めばいいじゃん
-1. 💭 data-widths と data-pattern はともに(本来は) doublet なので、JSON 形式で doublet 単位で要求する風にしても良さげ
-1. 💥 data-widths と data-pattern もそれ自体が doublet に出来るじゃん。つまり `[ [ <半径>,<幅>,<内側の形状=[]>,<外側の形状=[]> ], ...]` とまとめてしまって、それを監視する要素にするのです
-
-てことで
-
-* 今まで通りの `data-colors`
-* 形状情報を集約した `data-json`
-
-の 2 要素を監視すればいいってことですね。
