@@ -8,6 +8,7 @@
 //		+ data-colors ... 設定色を#rrggbb表現で記す。
 //		+ data-json  ... 形状を指定するJSON表記。二重配列で……
 //			+ [ [ <半径>,<幅>,<内側の形状=[]>,<外側の形状=[]> ], ...]
+//		+ data-turn  ... 回転方向の指定。無指定なら静止、leftで左回り、rightで右回り。
 //	+ CSSカスタムプロパティ(--*:*)による設定
 //		+ --length-size   ... 画像の大きさ
 //		+ --time-per-turn ... 1回転当たりの時間
@@ -86,11 +87,12 @@ class imascgssThatring extends HTMLElement{
 			100% {transform:rotate(0turn)}
 		}
 		svg{
-			animation: rightturn var(--time-per-turn,10s) linear infinite;
+			animation: none var(--time-per-turn,10s) linear infinite;
 			height: var(--length-size,50vmin);
 			width: var(--length-size,50vmin);
 		}
 		svg.left{ animation-name: leftturn }
+		svg.right{ animation-name: rightturn }
 		`;
 
 		//Shadow Root を作って、そこにぶら下げる。これでshadow DOM tree は完成
@@ -245,7 +247,7 @@ class imascgssThatring extends HTMLElement{
 				break;
 			case "data-turn":
 				//回転方向設定はクラス名で
-				this.svgRoot.className.baseVal = /^left$/i.test(_newVal) ? "left":"";
+				this.svgRoot.className.baseVal = /^left$/i.test(_newVal) ? "left" : /^right$/i.test(_newVal) ? "right" : "";
 				break;
 		}
 	}
