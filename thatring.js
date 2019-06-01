@@ -56,18 +56,18 @@ class imascgssThatring extends HTMLElement{
 		//いの一番↑に親クラスのコンストラクタを必ず呼ぶ
 
 		//SVG各種要素準備
-		const svgroot = this.newTagSVG("svg");
+		this.svgRoot = this.newTagSVG("svg");
 		this.elmDefs = this.newTagSVG("defs"); //<clipPath>,<radialGradient>を入れる
 		this.elmGrp = this.newTagSVG("g"); //<circle>を入れる
 		const clip = this.newTagSVG("clipPath");
 		this.elmPath = this.newTagSVG("path");
 
-		svgroot.appendChild(this.elmDefs);
-		svgroot.appendChild(this.elmGrp);
+		this.svgRoot.appendChild(this.elmDefs);
+		this.svgRoot.appendChild(this.elmGrp);
 		this.elmDefs.appendChild(clip);
 		clip.appendChild( this.elmPath );
 
-		svgroot.setAttribute("viewBox", "-1 -1 2 2");
+		this.svgRoot.setAttribute("viewBox", "-1 -1 2 2");
 		clip.setAttribute("clip-rule","evenodd");
 
 		//クリッピング設定をつなぎ合わせる
@@ -77,20 +77,26 @@ class imascgssThatring extends HTMLElement{
 		//<style> 専用 CSS Style
 		let style = document.createElement("style");
 		style.textContent =`
-		@keyframes oneturn {
+		@keyframes rightturn {
 			0% {transform:rotate(0turn)}
 			100% {transform:rotate(1turn)}
 		}
+		@keyframes leftturn {
+			0% {transform:rotate(1turn)}
+			100% {transform:rotate(0turn)}
+		}
 		svg{
-			animation: oneturn var(--time-per-turn,10s) linear infinite;
+			animation: rightturn var(--time-per-turn,10s) linear infinite;
 			height: var(--length-size,50vmin);
 			width: var(--length-size,50vmin);
-		}`;
+		}
+		svg.left{ animation-name: leftturn }
+		`;
 
 		//Shadow Root を作って、そこにぶら下げる。これでshadow DOM tree は完成
 		let shdwroot = this.attachShadow({mode:"open"})
 		shdwroot.appendChild(style);
-		shdwroot.appendChild(svgroot);
+		shdwroot.appendChild(this.svgRoot);
 
 		//初期設定値を適用 : radiusMidstrip はここで最初に設定
 		this.radiusMidstrip = this.calcMidstrip( this.normalize( this.integral(
@@ -214,6 +220,7 @@ class imascgssThatring extends HTMLElement{
 		this.elmPath.setAttribute("d",strPathD);
 	}
 
+
 	//<callback>属性に変更があった
 	attributeChangedCallback(_attrName, _oldVal, _newVal){
 		console.log(`aCCb : ${_attrName}`);
@@ -236,9 +243,13 @@ class imascgssThatring extends HTMLElement{
 				}
 				this.updateClipPath(newData);
 				break;
+			case "data-turn":
+				//回転方向設定はクラス名で
+				this.svgRoot.className.baseVal = /^left$/i.test(_newVal) ? "left":"";
+				break;
 		}
 	}
-	static get observedAttributes(){ return ["data-colors","data-json"] }
+	static get observedAttributes(){ return ["data-colors","data-json","data-turn"] }
 
 } //end_of_class imascgssThatring
 window.customElements.define('imascgss-thatring',imascgssThatring);
