@@ -13,8 +13,6 @@
 
 でざっくり指定すれば、使える。詳しくは /thatring.htm に使用例があるのでそっちで。
 
-**thatring 積み残し : 回る向き、時計回りに限らない。**
-
 
 ## ひょっとして
 
@@ -42,8 +40,8 @@ imascgss-typeicon :not(:defined){ opacity:0; }
 >
 > 1. HTML読込・解析完了
 > 1. deferで読み込んだJSを実行開始
-> 1. `window.customElements.define( dashed-tag-name, class )` に当たった
-> 1. 対応するクラスのコンストラクタを「使われた回数」実行
+> 1. `window.customElements.define( dashed-tag-name, class )` 関数に到達
+> 1. ⬆️の第1引数と同名のタグが使われた回数、第2引数クラスのコンストラクタを実行
 > 1. JS実行完了、`DOMContentLoaded` イベント発火
 >
 > という流れでした。  
