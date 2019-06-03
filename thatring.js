@@ -225,7 +225,7 @@ class imascgssThatring extends HTMLElement{
 
 	//<callback>属性に変更があった
 	attributeChangedCallback(_attrName, _oldVal, _newVal){
-		console.log(`aCCb : ${_attrName}`);
+		//console.log(`aCCb : ${_attrName}`);
 		let newData;
 		switch(_attrName){
 			case "data-colors":
