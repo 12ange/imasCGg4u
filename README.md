@@ -14,17 +14,12 @@
 でざっくり指定すれば、使える。詳しくは /thatring.htm に使用例があるのでそっちで。
 
 
-## ひょっとして
-
-属性アイコンも Custom Element 風に実装すればいいのでは。
-
-未定義のタグは、とりあえず span タグのような見た目になる？  
-例えば `<undefined-tag>content</undefined-tag>` とした場合、content と表示される
+## typeicon.js - Web Components 版・シンデレラガールズの属性アイコン
 
 ```html
 <imascgss-typeicon
-	data-idoltype="cute"
-	data-iconstyle="major"
+	data-type="cute"
+	data-style="major"
 >(Cu)<!-- 代替文字列 --></imascgss-typeicon>
 ```
 とすればフォールバックもいける。たぶん。
@@ -50,8 +45,3 @@ imascgss-typeicon :not(:defined){ opacity:0; }
 > https://developers.google.com/web/fundamentals/web-components/customelements?hl=ja
 >
 > HTML解析完了時点で、後の CustEle は (＝ CustEle として使える名前がついた要素は・一時的に) `HTMLElement` 型とみなされる……だからまっさらから CustEle を作るときは `extend HTMLElement` でないとなんだね。
-
-DOMツリーを動的に生成するなら結局JSなので、
-* JSが直接触るビルダークラス
-* ↑を継承するなり保持するなりした CustEle 専用無名クラス (define関数の第2引数に直書き)
-の2本立てにして、HTMLを手打ちしてJSノータッチの静的ページは CustEle で簡単に使えるようにすればいいかな。
