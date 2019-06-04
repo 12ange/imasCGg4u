@@ -2,20 +2,20 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<title>デレステの背景の謎輪っか(使用例)</title>
+<title>thatring.js - デレステのメニュー背景にあるあの輪っか</title>
+<link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
 <script defer src="./thatring.js"></script>
 <style>
-imascgss-thatring.customized{
-	--length-size:500px; --time-per-turn:120s
-}
+body{text-align:center}
 </style>
-</head><body style="text-align:center">
+</head><body>
 <h1>デレステの背景の謎輪っか(使用例)</h1>
+
 <p>⬇デフォルト(だと相対サイズになります)⬇</p>
 <imascgss-thatring></imascgss-thatring>
 <p>⬇指定ありでそれっぽいの(500px、1周120秒、反時計回りに設定)⬇</p>
 <imascgss-thatring
-	class="customized"
+	style="--length-size:500px;--time-per-turn:120s"
 	data-colors ="#d995ac,#f59fa0,#ffb195,#ffc887,#f9e08a,#d9d784,#8dd3ad,#71c5be,#71b1c7,#7e9dc3,#9c95c1,#b48fb5"
 	data-json ="[
 		[150,1],
