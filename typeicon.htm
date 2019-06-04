@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<title>typeicon.js - シンデレラガールズの属性アイコン</title>
+	<link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+	<link rel="stylesheet" href="./imascgss.css">
+	<style type="text/css">
+		body{font-size:16px}
+		td{vertical-align:top}
+		ul{list-style:none;margin:1ex}
+		td>strong,td>span,ul>li{line-height:150%;margin:.5ex}
+		ul>li>span{margin-left:.5ex}
+
+		imascgss-typeicon.emblem{--length-size:7em}
+		imascgss-typeicon.backdrop{position:absolute;bottom:0;right:0;opacity:.2}
+	</style>
+	<script defer src="./typeicon.js"></script>
+</head>
+<body>
+	<div class="imascgss cute">
+		<table><tr>
+			<td>
+				<imascgss-typeicon class="emblem" data-type="cute" data-style="major"></imascgss-typeicon>
+			</td>
+			<td width="100%" style="position:relative">
+				<imascgss-typeicon class="emblem backdrop" data-type="cute" data-style="shadow"></imascgss-typeicon>
+				<!--疑似背景画像：(1)親要素にposition:relative(2)背景に置きたい画像にposition:absolute-->
+				<strong>キュート属性</strong>
+				<ul>
+					<li><imascgss-typeicon data-type="cute" data-style="minor"></imascgss-typeicon><span>島村卯月</span></li>
+					<li><imascgss-typeicon data-type="cute" data-style="minor"></imascgss-typeicon><span>中野有香</span></li>
+					<li><imascgss-typeicon data-type="cute" data-style="minor"></imascgss-typeicon><span>水本ゆかり　ほか</span></li>
+				</ul>
+				<span>基本的に可愛いアイドルが集まる属性。</span>
+			</td>
+		</tr></table>
+	</div>
+	<div class="imascgss cool">
+		<table><tr>
+			<td>
+				<imascgss-typeicon class="emblem" data-type="cool" data-style="major"></imascgss-typeicon>
+			</td>
+			<td width="100%" style="position:relative">
+				<imascgss-typeicon class="emblem backdrop" data-type="cool" data-style="shadow"></imascgss-typeicon>
+				<strong>クール属性</strong>
+				<ul>
+					<li><imascgss-typeicon data-type="cool" data-style="minor"></imascgss-typeicon><span>渋谷凛</span></li>
+					<li><imascgss-typeicon data-type="cool" data-style="minor"></imascgss-typeicon><span>黒川千秋</span></li>
+					<li><imascgss-typeicon data-type="cool" data-style="minor"></imascgss-typeicon><span>松本沙理奈　ほか</span></li>
+				</ul>
+				<span>基本的に格好いいアイドルが集まる属性。</span>
+			</td>
+		</tr></table>
+	</div>
+	<div class="imascgss passion">
+		<table><tr>
+			<td>
+				<imascgss-typeicon class="emblem" data-type="passion" data-style="major"></imascgss-typeicon>
+			</td>
+			<td width="100%" style="position:relative">
+				<imascgss-typeicon class="emblem backdrop" data-type="passion" data-style="shadow"></imascgss-typeicon>
+				<strong>パッション属性</strong>
+				<ul>
+					<li><imascgss-typeicon data-type="passion" data-style="minor"></imascgss-typeicon><span>本田未央</span></li>
+					<li><imascgss-typeicon data-type="passion" data-style="minor"></imascgss-typeicon><span>高森藍子</span></li>
+					<li><imascgss-typeicon data-type="passion" data-style="minor"></imascgss-typeicon><span>並木芽衣子　ほか</span></li>
+				</ul>
+				<span>基本的に活発なアイドルが集まる属性。</span>
+			</td>
+		</tr></table>
+	</div>
+</body>
+</html>
