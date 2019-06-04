@@ -1,8 +1,8 @@
-﻿# Idol Master Cinderella Girls Icons on SVG
+﻿# Custom Elements for IM@S Cinderella Girls
 
 内部的にはSVGを利用した、アイコン(類)
 
-## thatring.js - Web Components 版・デレステのメニュー背景にあるあの輪っか
+## thatring.js - デレステのメニュー背景にあるあの輪っか
 
 ```html
 <imascgss-thatring
@@ -14,7 +14,7 @@
 でざっくり指定すれば、使える。詳しくは /thatring.htm に使用例があるのでそっちで。
 
 
-## typeicon.js - Web Components 版・シンデレラガールズの属性アイコン
+## typeicon.js - シンデレラガールズ属性アイコン
 
 ```html
 <imascgss-typeicon
