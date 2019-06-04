@@ -2,74 +2,45 @@
 <html lang="ja">
 <head>
 	<meta charset="utf-8">
-	<title>SVG demo</title>
+	<title>Custom Elements for IM@S Cinderella Girls</title>
 	<link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+	<link rel="stylesheet" href="./imascgss.css">
 	<style type="text/css">
-		body{font-size:16px}
-		td{vertical-align:top}
-		.elmCu{color:#e26; background-color:#fee}
-		.elmCo{color:#05d; background-color:#eef}
-		.elmPa{color:#fb0; background-color:#ffd}
-		ul{list-style:none;margin:1ex}
-		td>strong,td>span,ul>li{line-height:150%;margin:.5ex}
-		ul>li>span{margin-left:.5ex}
-		imascgss-typeicon.emblem{--length-size:7em}
-		imascgss-typeicon.backdrop{position:absolute;bottom:0;right:0;opacity:.2}
+		body{background-color:#eee;font-size:16px;text-align:center}
+		body>div{position:absolute;height:100%;width:100%}
+
+		#ringdiv{display:table;overflow:hidden;z-index:-1}
+		imascgss-thatring{display:table-cell;vertical-align:middle;--length-size:90vmin;--time-per-turn:120s}
+
+		#infodiv{display:grid;grid-template-rows:1fr 4em 1fr 4em 1fr}
+		#infodiv>div{background-color:rgba(255,255,255,0.9);padding:1em}
+		imascgss-typeicon.followtype[data-type="cute"]{color:#e26;}
+		imascgss-typeicon.followtype[data-type="cool"]{color:#05d;}
+		imascgss-typeicon.followtype[data-type="passion"]{color:#fb0;}
 	</style>
+	<script defer src="./thatring.js"></script>
 	<script defer src="./typeicon.js"></script>
 </head>
 <body>
-	<div class="elmCu">
-		<table><tr>
-			<td>
-				<imascgss-typeicon class="emblem" data-type="cute" data-style="major"></imascgss-typeicon>
-			</td>
-			<td width="100%" style="position:relative">
-				<imascgss-typeicon class="emblem backdrop" data-type="cute" data-style="shadow"></imascgss-typeicon>
-				<!--疑似背景画像：(1)親要素にposition:relative(2)背景に置きたい画像にposition:absolute-->
-				<strong>キュート属性</strong>
-				<ul>
-					<li><imascgss-typeicon data-type="cute" data-style="minor"></imascgss-typeicon><span>島村卯月</span></li>
-					<li><imascgss-typeicon data-type="cute" data-style="minor"></imascgss-typeicon><span>中野有香</span></li>
-					<li><imascgss-typeicon data-type="cute" data-style="minor"></imascgss-typeicon><span>水本ゆかり　ほか</span></li>
-				</ul>
-				<span>基本的に可愛いアイドルが集まる属性。</span>
-			</td>
-		</tr></table>
+<div id="ringdiv">
+	<imascgss-thatring
+		data-colors ="#d995ac,#f59fa0,#ffb195,#ffc887,#f9e08a,#d9d784,#8dd3ad,#71c5be,#71b1c7,#7e9dc3,#9c95c1,#b48fb5"
+		data-json ="[[150,1],[7,2],[4,14,[1,5,3,7,9,2,3,2,8,3,11,3,5,3,2,3,8,5,1,6,4,7,6,5],[]],[0,10,[],[2,3,1,2,2,2,1,4,5,1,2,3,1,2,2,2,1,4,5,1]],[2,3],[6,1]]"
+		data-turn="right"
+	></imascgss-thatring>
+</div>
+<div id="infodiv">
+	<p></p>
+	<div>thatring.js - デレステのメニュー背景にあるあの輪っか。<a href="./thatring.htm">詳細は thatring.htm にて</a>。</div>
+	<p></p>
+	<div>
+		<imascgss-typeicon class="followtype" data-type="cute" data-style="major"></imascgss-typeicon>
+		typeicon.js - シンデレラガールズの属性アイコン
+		<imascgss-typeicon class="followtype" data-type="cool" data-style="major"></imascgss-typeicon>
+		<a href="./typeicon.htm">詳細は typeicon.htm にて</a>
+		<imascgss-typeicon class="followtype" data-type="passion" data-style="major"></imascgss-typeicon>
 	</div>
-	<div class="elmCo">
-		<table><tr>
-			<td>
-				<imascgss-typeicon class="emblem" data-type="cool" data-style="major"></imascgss-typeicon>
-			</td>
-			<td width="100%" style="position:relative">
-				<imascgss-typeicon class="emblem backdrop" data-type="cool" data-style="shadow"></imascgss-typeicon>
-				<strong>クール属性</strong>
-				<ul>
-					<li><imascgss-typeicon data-type="cool" data-style="minor"></imascgss-typeicon><span>渋谷凛</span></li>
-					<li><imascgss-typeicon data-type="cool" data-style="minor"></imascgss-typeicon><span>黒川千秋</span></li>
-					<li><imascgss-typeicon data-type="cool" data-style="minor"></imascgss-typeicon><span>松本沙理奈　ほか</span></li>
-				</ul>
-				<span>基本的に格好いいアイドルが集まる属性。</span>
-			</td>
-		</tr></table>
-	</div>
-	<div class="elmPa">
-		<table><tr>
-			<td>
-				<imascgss-typeicon class="emblem" data-type="passion" data-style="major"></imascgss-typeicon>
-			</td>
-			<td width="100%" style="position:relative">
-				<imascgss-typeicon class="emblem backdrop" data-type="passion" data-style="shadow"></imascgss-typeicon>
-				<strong>パッション属性</strong>
-				<ul>
-					<li><imascgss-typeicon data-type="passion" data-style="minor"></imascgss-typeicon><span>本田未央</span></li>
-					<li><imascgss-typeicon data-type="passion" data-style="minor"></imascgss-typeicon><span>高森藍子</span></li>
-					<li><imascgss-typeicon data-type="passion" data-style="minor"></imascgss-typeicon><span>並木芽衣子　ほか</span></li>
-				</ul>
-				<span>基本的に活発なアイドルが集まる属性。</span>
-			</td>
-		</tr></table>
-	</div>
+	<p></p>
+</div>
 </body>
 </html>
