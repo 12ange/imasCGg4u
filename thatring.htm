@@ -4,27 +4,150 @@
 <meta charset="utf-8">
 <title>thatring.js - デレステのメニュー背景にあるあの輪っか</title>
 <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+<link rel="stylesheet" href="./imascgss.css">
 <script defer src="./thatring.js"></script>
 <style>
-body{text-align:center}
+body{font-size:16px;padding:0 1%}
+button{margin:1ex}
+code{background-color:#eef;color:#060;padding:2px}
+fieldset{line-height:1.666em;margin:1ex;padding-right:1ex}
+input,select{border:1px solid silver;font-size:90%;padding:1px}
+input:disabled,select:disabled{color:silver}
+legend{margin-left:1em;padding:0 1ex}
+ol{padding-left:40px}
+ol.dec{list-style-type:decimal}
+ol.alp{list-style-type:lower-alpha}
+#vSizeUni,#vTimeUni{position:relative} /*label*/
+#vSizeUni>select,#vTimeUni>select{position:relative}
+#vSizeUni:after,#vTimeUni:after{bottom:0;content:"▼";display:block;pointer-events:none;position:absolute;right:0}
 </style>
 </head><body>
-<h1>デレステの背景の謎輪っか(使用例)</h1>
-
+<h1>デレステのメニュー背景にあるあの輪っか</h1>
+<fieldset><legend>導入方法<!--　兼　LIVE DEMO--></legend>
+	<ol class="dec">
+	<li>
+		&lt;head&gt;~&lt;/head&gt;間に
+		<code>&lt;script defer src=&quot;<a href="./thatring.js"></a>&quot;&gt;&lt;/script&gt;</code>
+		と記述
+	</li>
+	<li>
+		&lt;body&gt;~&lt;/body&gt;間に
+		<code>&lt;imascgss-thatring&gt;&lt;/imascgss-thatring&gt;</code>
+		と記述
+	</li>
+	<li>【 オプション 】属性を追加する
+		<ol class="alp">
+		<li><code>data-colors</code> 設定色。<code>#xxxxxx</code>形式、カンマ区切りで6色以上。指定なしはソレっぽい色になる。</li>
+		<li><code>data-json</code> 形状指定。JSONにおける配列の記法を使う。
+		<br><code>[ [ &lt;半径&gt;,&lt;幅&gt;,&lt;内側の形状=[]&gt;,&lt;外側の形状=[]&gt; ], ...]</code>
+		<br>全ての値は 0以上の整数。単位は無くいわゆる比率で表す(円自体の画面上の大きさはCSS変数で指定するため)。
+		<br><code>半径</code>と<code>幅</code>は直前の円からの増分、省略不可。
+		<br><code>内側の形状</code>と<code>外側の形状</code>は「現在の円周を使う角度」と「ひとつ前の円周を使う角度」を交互に入力、省略可能。</li>
+		<li><code>data-turn</code> 回転方向。指定なしは無回転、<code>=&quot;left&quot;</code>で左回り、<code>=&quot;right&quot;</code>で右回り。</div></li>
+		</ol>
+	</li>
+	<li>【 オプション 】CSS変数で大きさなどを変更する
+		<ol class="alp">
+		<li>
+			<code>--length-size</code> 輪の大きさ。<a href="http://www.w3.org/TR/css3-values/#lengths">&lt;length&gt;型</a>を与える。
+			<br>
+			<span>既定値は<code>50vmin</code>。</span><!--<br>
+			<label id="vSizeChk"><input type="checkbox">設定する</label>
+			<input id="vSizeNum" type="number" value="50" min="1" max="999">
+			<label id="vSizeUni"><select>
+				<optgroup label="相対的長さ">
+					<option value="em">em (フォントサイズ)</option>
+					<option value="ex">ex (文字 x の高さ)</option>
+					<option value="ch">ch (文字 0 (ゼロ)の幅)</option>
+					<option value="rem">rem (bodyに設定されたフォントサイズ)</option>
+					<option value="vw">vw (画面幅の1%)</option>
+					<option value="vh">vh (画面高さの1%)</option>
+					<option value="vmin" selected>vmin (画面短辺の1%)</option>
+					<option value="vmax">vmax (画面長辺の1%)</option>
+				</optgroup>
+				<optgroup label="絶対的長さ">
+					<option value="cm">cm (センチメートル)</option>
+					<option value="mm">mm (ミリメートル)</option>
+					<option value="Q">Q (40分の1 cm)</option>
+					<option value="in">in (インチ ＝ 25.4 mm)</option>
+					<option value="pc">pc (パイカ ≒ 4.233 mm (1/6[in]))</option>
+					<option value="pt">pt (ポイント ≒ 0.3527 mm (1/72[in]))</option>
+					<option value="px">px (ピクセル ≒ 0.2646 mm (1/96[in]))</option>
+				</optgroup>
+			</select></label>
+		--></li>
+		<li>
+			<code>--time-per-turn</code> 1回転当たりの時間。<a href="https://www.w3.org/TR/css3-values/#time">&lt;time&gt;型</a>を与える。
+			<br>
+			<span>既定値は<code>10s</code>。</span><!--<br>
+			<label id="vTimeChk"><input type="checkbox">設定する</label>
+			<input id="vTimeNum" type="number" value="10" min="1" max="9999">
+			<label id="vTimeUni"><select>
+				<option value="s" selected>s (秒)</option>
+				<option value="ms">ms (1000分の1秒)</option>
+			</select></label>
+		--></li>
+		</ol>
+	</li>
+	</ol><!--
+	<button id="reflect" class="imascgss">&ensp;以上の設定を下の輪に反映する&ensp;</button>
+--></fieldset>
+<!--
+<div id="ringyours"><imascgss-thatring></imascgss-thatring></div>
+<code id="gencode"></code>
+-->
 <p>⬇デフォルト(だと相対サイズになります)⬇</p>
-<imascgss-thatring></imascgss-thatring>
-<p>⬇指定ありでそれっぽいの(500px、1周120秒、反時計回りに設定)⬇</p>
-<imascgss-thatring
+<code>&lt;imascgss-thatring&gt;&lt;/imascgss-thatring&gt;</code>
+<br><imascgss-thatring></imascgss-thatring>
+<p>⬇指定ありでそれっぽいの(500px、1周120秒、反時計回りに設定。)⬇</p>
+<code>&lt;imascgss-thatring
+<br>&emsp;style=&quot;--length-size:500px;--time-per-turn:120s&quot;
+<br>&emsp;data-colors =&quot;#d995ac,#f59fa0,#ffb195,#ffc887,#f9e08a,#d9d784,#8dd3ad,#71c5be,#71b1c7,#7e9dc3,#9c95c1,#b48fb5&quot;
+<br>&emsp;data-json =&quot;[
+<br>&emsp;&emsp;[150,1],
+<br>&emsp;&emsp;[7,2],
+<br>&emsp;&emsp;[4,14,[1,5,3,7,9,2,3,2,8,3,11,3,5,3,2,3,8,5,1,6,4,7,6,5],[]],
+<br>&emsp;&emsp;[0,10,[],[2,3,1,2,2,2,1,4,5,1,2,3,1,2,2,2,1,4,5,1]],
+<br>&emsp;&emsp;[2,3],
+<br>&emsp;&emsp;[6,1]
+<br>&emsp;]&quot;
+<br>&emsp;data-turn=&quot;left&quot;
+<br>&gt;&lt;/imascgss-thatring&gt;</code>
+<br><imascgss-thatring
 	style="--length-size:500px;--time-per-turn:120s"
 	data-colors ="#d995ac,#f59fa0,#ffb195,#ffc887,#f9e08a,#d9d784,#8dd3ad,#71c5be,#71b1c7,#7e9dc3,#9c95c1,#b48fb5"
-	data-json ="[
-		[150,1],
-		[7,2],
-		[4,14,[1,5,3,7,9,2,3,2,8,3,11,3,5,3,2,3,8,5,1,6,4,7,6,5],[]],
-		[0,10,[],[2,3,1,2,2,2,1,4,5,1,2,3,1,2,2,2,1,4,5,1]],
-		[2,3],
-		[6,1]
-	]"
+	data-json ="[[150,1],[7,2],[4,14,[1,5,3,7,9,2,3,2,8,3,11,3,5,3,2,3,8,5,1,6,4,7,6,5],[]],[0,10,[],[2,3,1,2,2,2,1,4,5,1,2,3,1,2,2,2,1,4,5,1]],[2,3],[6,1]]"
 	data-turn="left"
 ></imascgss-thatring>
+
+<script>
+"use strict";
+const GET_ID = tag=>document.getElementById(tag);
+const NEW_TAG = tag=>document.createElement(tag);
+const NEW_INPUT_TYPE = typ=>{let e=NEW_TAG("input");e.type=typ;return e}
+
+let gobjColors={}, gobjJson={}, gobjTurn={}, gobjSize={}, gobjTime={};
+
+function init(){
+	//絶対パスは動的に(公開場所が移動したらその都度書き換えるのめんどい)
+	(e=>{e.textContent=e.href})(document.getElementsByTagName("a")[0])
+
+	//割り当て
+
+	// gobjTime.elmCheckbox = NEW_INPUT_TYPE("checkbox");
+	// gobjTime.elmNumber = NEW_INPUT_TYPE("number");
+	// gobjTime.elmSelect = NEW_TAG("select");
+
+
+	// update();
+}
+/*
+function update(){
+	GET_ID("gencode").textContent = GET_ID("ringyours").innerHTML;
+}
+GET_ID("reflect").addEventListener("click",update);
+*/
+window.addEventListener("load",init);
+
+</script>
 </body></html>
