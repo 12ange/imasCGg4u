@@ -29,6 +29,12 @@ imascgss-typeicon :not(:defined){ opacity:0; }
 ```
 で、未定義状態で表示された場合に隠してもよい。
 
+## imascgss.css - デレステのボタン風ボタンを含む、良さげなスタイルシート
+
+- `<button class="imascgss"> ~ </button>` でデレステのボタン風ボタン
+- `<span class="imascgss `属性名小文字/notidol`"> ~ </span>` で属性っぽい強調表示
+- `<imascgss-typeicon class="followtype" data-type="~" data-style="~"></imascgss-typeicon>` で属性に応じた色を自動適用
+
 > ### 覚え書き: Custom Element の定義を含む Javascript の実行タイミング
 >
 > ブラウザーは Google Chrome 72, thatringを使って実験した結果
