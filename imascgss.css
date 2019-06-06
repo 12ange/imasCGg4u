@@ -27,7 +27,8 @@ button.imascgss.strong, button.imascgss:disabled{ /*背景色が白ではない�
 button.imascgss:active{transform:translateY(4px); box-shadow:none} /*押下中*/
 
 /* 属性色設定。明暗反転は、反転表現属性文字列で指定。
-   https://www.kanzaki.com/docs/html/color-check の輝度比を参考に、属性が切り替わっても輝度が変わらないようにした */
+   https://www.kanzaki.com/docs/html/color-check の輝度比を参考に、属性が切り替わっても輝度が変わらないようにした
+   その為、アイコン類で使われている色より暗く出る(そのほうが可読性が向上する) */
 /*#d06:#ffe7ee is 0.16331:0.84585=4.2*/
 .imascgss.cute{color:#d06; border-color:#d06; background-color:#ffe7ee}
 .imascgss.etuc{color:#ffe7ee; border-color:#ffe7ee; background-color:#d06}
@@ -41,3 +42,8 @@ button.imascgss:active{transform:translateY(4px); box-shadow:none} /*押下中*/
 .imascgss.notidol{color:#373; border-color:#373; background-color:#cfc}
 .imascgss.loditon{color:#cfc; border-color:#cfc; background-color:#373}
 /*文字列反転は自作で→ const reverseString = s=>{let t="";for(let v of s){t=v+t}return t} */
+
+/*姉妹品の属性アイコン(相対パス="./typeicon.js")に class="followtype" と入れてあげると、属性に応じた色を強制的に適用する*/
+imascgss-typeicon.followtype[data-type="cute"]{color:#e26;}
+imascgss-typeicon.followtype[data-type="cool"]{color:#05d;}
+imascgss-typeicon.followtype[data-type="passion"]{color:#fb0;}
