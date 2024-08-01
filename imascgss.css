@@ -29,6 +29,16 @@ button.imascgss.strong, button.imascgss:disabled{ /*背景色が白ではない�
 		-1px  2px 0 #000, 1px  2px 0 #000; /*要するに八方桂馬の位置です。半径sqrt(3)*/
 }
 
+/* 楽曲プレイ中に表示されるスコア風な文字装飾 : サンセリフ、太字、赤文字、白縁取り */
+.imascgss.fancyscore{
+	font-family: "Arial", sans-serif;
+	font-weight: bold;
+	color: #f47;
+	text-shadow:
+		-1px -1px #fff, 1px -1px #fff,
+		-1px  1px #fff, 1px  1px #fff; /*半径sqrt(2)*/
+}
+
 /* 属性色設定。明暗反転は、反転表現属性文字列で指定。
    https://www.kanzaki.com/docs/html/color-check の輝度比を参考に、属性が切り替わっても輝度が変わらないようにした
    その為、アイコン類で使われている色より暗く出る(そのほうが可読性が向上する) */
