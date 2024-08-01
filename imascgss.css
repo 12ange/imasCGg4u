@@ -57,9 +57,10 @@ button.imascgss.strong, button.imascgss:disabled{ /*背景色が白ではない�
 /*文字列反転は自作で→ const reverseString = s=>{let t="";for(let v of s){t=v+t}return t} */
 
 /* 6周年衣装「アド・アストラ」版の属性色 - スクショのふとももから採取 */
-.imascgss.adastra.cute{color:#ec4778}
-.imascgss.adastra.cool{color:#8a50fd}
-.imascgss.adastra.passion{color:#abc40e}
+.imascgss.adastra{background-color: #336}
+.imascgss.adastra.cute{color:#ec4778; border-color:#ec4778}
+.imascgss.adastra.cool{color:#8a50fd; border-color:#8a50fd}
+.imascgss.adastra.passion{color:#abc40e; border-color:#abc40e}
 
 /*姉妹品の属性アイコン(相対パス="./typeicon.js")に class="followtype" と入れてあげると、属性に応じた色を強制的に適用する*/
 imascgss-typeicon.followtype[data-type="cute"]{color:#e26;}
