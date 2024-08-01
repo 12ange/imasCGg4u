@@ -14,8 +14,12 @@ button.imascgss{
 	padding:.5em 0;
 	box-shadow:0 4px #000;
 }
+button.imascgss:active{transform:translateY(4px); box-shadow:none} /*押下中*/
 button.imascgss.strong{background-color:#f7d}
-button.imascgss:disabled{background-color:gray; cursor:auto}
+button.imascgss:disabled{
+	background-color:gray; cursor:auto;
+	transform:translateY(0); box-shadow:0 4px #000; /*押下中の視覚効果を打ち消す*/
+}
 button.imascgss.strong, button.imascgss:disabled{ /*背景色が白ではないボタン共通:白文字に黒縁取り*/
 	color:#fff;
 	text-shadow:
@@ -24,7 +28,6 @@ button.imascgss.strong, button.imascgss:disabled{ /*背景色が白ではない�
 		-2px  1px 0 #000, 2px  1px 0 #000,
 		-1px  2px 0 #000, 1px  2px 0 #000; /*要するに八方桂馬の位置です。半径sqrt(3)*/
 }
-button.imascgss:active{transform:translateY(4px); box-shadow:none} /*押下中*/
 
 /* 属性色設定。明暗反転は、反転表現属性文字列で指定。
    https://www.kanzaki.com/docs/html/color-check の輝度比を参考に、属性が切り替わっても輝度が変わらないようにした
@@ -42,6 +45,11 @@ button.imascgss:active{transform:translateY(4px); box-shadow:none} /*押下中*/
 .imascgss.notidol{color:#373; border-color:#373; background-color:#cfc}
 .imascgss.loditon{color:#cfc; border-color:#cfc; background-color:#373}
 /*文字列反転は自作で→ const reverseString = s=>{let t="";for(let v of s){t=v+t}return t} */
+
+/* 6周年衣装「アド・アストラ」版の属性色 - スクショのふとももから採取 */
+.imascgss.adastra.cute{color:#ec4778}
+.imascgss.adastra.cool{color:#8a50fd}
+.imascgss.adastra.passion{color:#abc40e}
 
 /*姉妹品の属性アイコン(相対パス="./typeicon.js")に class="followtype" と入れてあげると、属性に応じた色を強制的に適用する*/
 imascgss-typeicon.followtype[data-type="cute"]{color:#e26;}
